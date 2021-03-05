@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Appli restaurant</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" charset="utf-8">
+
+  <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsenui.css">
+  <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsen-css-components.min.css">
+  <script src="https://unpkg.com/onsenui/js/onsenui.min.js"></script>
+  <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+    integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+  <script type="text/javascript" src="cordova.js"></script>
+  <link rel="stylesheet" href="/www/css/datepicker.css">
+  <link rel="stylesheet" href="css/datepicker-theme.css">
+  <script src="/www/js/datepicker.js"></script>
+  <script src="/www/js/request.js"></script>
+
+  <script type="text/javascript">
+    //var AntineaRating = 4.3;
+    function redirectToIndex() {
+      document.location.href = "./";
+    }
+    fetch('https://bbessere.lpmiaw.univ-lr.fr/resto.php?getrating=true')
+      .then(function (response) {
+        return response.json();
+      })
+      .then((data) => {
+        function roundHalf(num) {
+          return Math.round(num * 2) / 2;
+        }
+        let star = document.getElementById('icons');
+        for (let i = roundHalf(data); i > 0; i--) {
+          if (i >= 1) {
+            star.innerHTML += "<ons-icon style=\"color: gold;\" icon=\"fa-star\" fixed-width=\"false\"></ons-icon>";
+          }
+          if (i == 0.5) {
+            star.innerHTML += "<ons-icon style=\"color: gold;\" icon=\"fa-star-half-o\" fixed-width=\"false\"></ons-icon>";
+          }
+        }
+      }
+      )
+
+    fetch('https://bbessere.lpmiaw.univ-lr.fr/resto.php?getsuggestion=true')
+      .then(function (response) {
+        response.text().then(function (text) {
+          document.getElementById('suggestion').innerHTML = text;
+        })
+      })
+    var id = "Gwladys";
+    fetch('https://bbessere.lpmiaw.univ-lr.fr/resto.php?getreservation=true&id=' + id)
+      .then(function (response) {
+        response.text().then(function (text) {
+          document.getElementById('reservation').setAttribute('badge', text)
+
+        })
+      })
+  </script>
+
+</head>
+
+<body>
+  <ons-tabbar swipeable position="auto">
+    <ons-tab page="antinea-presentation.html" label="Accès" icon="md-home" active-icon="md-home">
+    </ons-tab>
+    <ons-tab page="antinea-carte.html" label="Menu" icon="fa-book-open" active-icon="fa-book-open">
+    </ons-tab>
+    <ons-tab page="antinea-diaporama.html" label="Galerie" icon="fa-images" active-icon="fa-images">
+    </ons-tab>
+    <ons-tab page="antinea-avis.html" label="Avis" icon="fa-star-half-alt" active-icon="fa-star-half-alt">
+    </ons-tab>
+    <ons-tab id="reservation" page="antinea-reservations.html" label="Reserver" icon="fa-utensils"
+      active-icon="fa-utensils">
+    </ons-tab>
+  </ons-tabbar>
+  <ons-bottom-toolbar>
+    <div class="center" style="width:100%; text-align:center;font-size:36px;">
+      <ons-toolbar-button tappable onClick="redirectToIndex()" icon="md-home" active-icon="md-home"
+        style="font-size:36px;">
+    </div>
+    </ons-toolbar-button>
+  </ons-bottom-toolbar>
+
+  <!--------------------------------------------------- ANTINEA MAIN PAGE
+        ------------------------------------------------------------------------ -->
+  <template id='antinea.html'>
+
+    <ons-page id='antinea'>
+
+      <ons-card>
+        <img class="list-item__thumbnail" src="images/antinea.jpg" style="with: auto;">
+        <div class="title">
+          RU Antinea
+          <div id="icons"></div>
+        </div>
+        <div class="content">
+
+        </div>
+      </ons-card>
+
+
+    </ons-page>
+  </template>
+  <!-- fin page principale -->
+
+
+
+  <!--------------------------------------------------- PAGE MENU ------------------------------------------------------------------------- -->
+  <template id="antinea-carte.html">
+
+    <ons-page id="antinea-carte">
+      <ons-toolbar>
+        <div class="left">
+          <ons-back-button></ons-back-button>
+        </div>
+        <div class="center">
+          ANTINEA - Le Menu
+        </div>
+      </ons-toolbar>
+
+
+      <ons-list modifier="inset" style="margin-top:20px;">
+        <ons-list-item expandable>
+          Pizzas
+          <div class="expandable-content">
+            <table data-role="table" id="antinea-table" data-mode="reflow" class="ui-responsive">
+              <thead>
+                <tr>
+                  <th data-priority="1">Nom</th>
+                  <th data-priority="2"></th>
+                  <th data-priority="3">Recette</th>
+                  <th data-priority="4">Prix</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th>Marina</th>
+                  <td><img alt="Marina" src="images/pizza1.jpg" width="100" /></td>
+                  <td>tomate, ail, origan, huile d'olive</td>
+                  <td>9&nbsp;&euro;</td>
+                </tr>
+                <tr>
+                  <th>Reine</th>
+                  <td><img alt="Reine" src="images/reine.jpg" width="100" /></td>
+                  <td>tomate, mozzarella, jambon, champignon</td>
+                  <td>10&nbsp;&euro;</td>
+                </tr>
+                <tr>
+                  <th>Vegetarienne</th>
+                  <td><img alt="Veget" src="images/veget.jpg" width="100" /></td>
+                  <td>tomate, artichauts, brocolis</td>
+                  <td>10&nbsp;&euro;</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </ons-list-item>
+        <ons-list-item expandable>
+          Pâtes
+          <div class="expandable-content">Rien pour le moment</div>
+        </ons-list-item>
+        <ons-list-item expandable>
+          Desserts
+          <div class="expandable-content">Rien pour le moment</div>
+        </ons-list-item>
+      </ons-list>
+
+      <ons-card>
+        Suggestion du chef : <span id="suggestion"></span>
+      </ons-card>
+    </ons-page>
+  </template>
+
+
+  <!--------------------------------------------------- PAGE PRESENTATION et GEOLOCALISATION ---------- -- -->
+  <template id="antinea-presentation.html">
+
+    <ons-page id="antinea-presentation" style="text-align:center;">
+      <img class="" src="images/antinea.jpg" style="width: 100%;
+              height: 20%;
+              display: block;
+              margin: 0;
+              object-fit: cover;">
+
+      <h1>Le restaurant Antinea.</h1>
+      <div id="icons"></div>
+
+      Type de restauration : Brasserie, pizzeria<br>
+      Accessible aux personnes à mobilité réduite<br>
+      WIFI disponible<br>
+      Modes de payement : CB, Izly
+
+      <h2>Votre position</h2>
+      <div id="position"></div>
+      <h2>Horaires</h2>
+      11h30-13h45
+      <h2>Acces</h2>
+      15 rue Vaux de Foletier 17000 LA ROCHELLE<br>
+      Téléphone : 05.46.44.18.57<br><br>
+      <h2>Distance du RU : <span id="distanceRU"></span></h2>
+      <script type="text/javascript">
+
+
+
+
+        // onSuccess Callback
+        // This method accepts a Position object, which contains the
+        // current GPS coordinates
+        //
+
+        var onSuccess = function (position) {
+          let positionValue = document.getElementById('position');
+
+          positionValue.innerHTML = '<p>Latitude: ' + position.coords.latitude + '</p>' +
+            '<p>Longitude: ' + position.coords.longitude + '</p>';
+
+          var lat1 = position.coords.latitude;
+          var lon1 = position.coords.longitude;
+          var lat2 = 46.141871942579996;
+          var lon2 = -1.1521911622109375;
+          var distanceRU = document.getElementById('distanceRU');
+          distanceRU.innerHTML = getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) + ' km';
+        };
+
+        // onError Callback receives a PositionError object
+        //
+        function onError(error) {
+          alert('code: ' + error.code + '\n' +
+            'message: ' + error.message + '\n');
+        }
+
+        navigator.geolocation.getCurrentPosition(onSuccess, onError);
+
+        function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
+          var R = 6371; // Rayon du globe terrestre en km
+          var dLat = deg2rad(lat2 - lat1); // deg2rad ci-dessous
+          var dLon = deg2rad(lon2 - lon1);
+          var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+            Math.sin(dLon / 2) * Math.sin(dLon / 2);
+          var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+          var d = R * c; // Distance en km
+          return d.toFixed(2);
+        }
+        // Fonction auxilliaire
+        function deg2rad(deg) {
+          return deg * (Math.PI / 180)
+        }
+
+
+      </script>
+    </ons-page>
+
+  </template>
+  <!--------------------------------------------------- PAGE DIAPORAMA ---------------------------------------->
+  <template id="antinea-diaporama.html">
+    <ons-page id="antinea-diaporama">
+
+      <ons-carousel fullscreen swipeable auto-scroll overscrollable id="carousel">
+        <ons-carousel-item style="background-color: white;">
+          <img src="images/antinea/img1.jpg" alt="">
+        </ons-carousel-item>
+        <ons-carousel-item style="background-color: white;">
+          <img src="images/antinea/img2.jpg" alt="">
+        </ons-carousel-item>
+        <ons-carousel-item style="background-color: white;">
+          <img src="images/antinea/img3.jpg" alt="">
+        </ons-carousel-item>
+        <ons-carousel-item style="background-color: white;">
+          <img src="images/antinea/img4.jpg" alt="">
+        </ons-carousel-item>
+        <ons-carousel-item style="background-color: white;">
+          <img src="images/antinea/img5.jpg" alt="">
+        </ons-carousel-item>
+      </ons-carousel>
+
+
+      <ons-carousel id="carousel" fullscreen swipeable auto-scroll overscrollable initial-index="0">
+        <ons-carousel-item class="carousel-item" style="background-color: gray">
+          <img src="images/antinea/img1.jpg" alt="">
+        </ons-carousel-item>
+        <ons-carousel-item class="carousel-item" style="background-color: gray">
+          <img src="images/antinea/img2.jpg" alt="">
+        </ons-carousel-item>
+        <ons-carousel-item class="carousel-item" style="background-color: #085078">
+          <img src="images/antinea/img3.jpg" alt="">
+        </ons-carousel-item>
+        <ons-carousel-item class="carousel-item" style="background-color: #373B44">
+          <img src="images/antinea/img4.jpg" alt="">
+        </ons-carousel-item>
+        <ons-carousel-item class="carousel-item" style="background-color: #D38312">
+          <img src="images/antinea/img5.jpg" alt="">
+        </ons-carousel-item>
+      </ons-carousel>
+
+      <div class="dots">
+        <span id="dot0" class="dot" onclick="fn.swipe(this)">
+          &#9679;
+        </span>
+        <span id="dot1" class="dot" onclick="fn.swipe(this)">
+          &#9675;
+        </span>
+        <span id="dot2" class="dot" onclick="fn.swipe(this)">
+          &#9675;
+        </span>
+        <span id="dot3" class="dot" onclick="fn.swipe(this)">
+          &#9675;
+        </span>
+        <span id="dot4" class="dot" onclick="fn.swipe(this)">
+          &#9675;
+        </span>
+      </div>
+
+
+      <style>
+        .carousel-item {
+          display: flex;
+          justify-content: space-around;
+          align-items: center;
+
+        }
+
+
+
+        .dots {
+          text-align: center;
+          font-size: 30px;
+          color: #43bdff;
+          position: absolute;
+          bottom: 50px;
+          left: 0;
+          right: 0;
+        }
+
+        .dots>span {
+          cursor: pointer;
+
+        }
+      </style>
+      <script>
+        ons.getScriptPage().onInit = function () {
+          const carousel = document.getElementById('carousel');
+          carousel.addEventListener('postchange', function () {
+            var index = carousel.getActiveIndex();
+            const dots = document.querySelectorAll('.dot');
+            for (dot of dots) {
+              dot.innerHTML = dot.id === 'dot' + index ? '&#9679;' : '&#9675;';
+            }
+          });
+          window.fn.swipe = function (target) {
+            carousel.setActiveIndex(Number(target.id.slice(-1)));
+          }
+        }
+
+
+
+        window.fn = {};
+
+        window.fn.toggleMenu = function () {
+          document.getElementById('appSplitter').right.toggle();
+        };
+
+        window.fn.loadView = function (index) {
+          document.getElementById('appTabbar').setActiveTab(index);
+          document.getElementById('sidemenu').close();
+        };
+
+        window.fn.loadLink = function (url) {
+          window.open(url, '_blank');
+        };
+
+        window.fn.pushPage = function (page, anim) {
+          if (anim) {
+            document.getElementById('appNavigator').pushPage(page.id, { data: { title: page.title }, animation: anim });
+          } else {
+            document.getElementById('appNavigator').pushPage(page.id, { data: { title: page.title } });
+          }
+        };
+      </script>
+    </ons-page>
+  </template>
+  <!--------------------------------------------------- PAGE AVIS -------------------------------------------------------->
+  <template id="antinea-avis.html">
+    <ons-page id="antinea-avis">
+
+      <h2>Que pensez-vous du restaurant Antinea ? </h2>
+
+      <div id="avis" style="margin-top: 20px; width: 100%; text-align:center; font-size: 30px; font-weight:bold;"
+        class="center"> 4 </div>
+      <ons-row style="margin-top: 20px;">
+        <ons-col width="40px" style="text-align: center; line-height: 31px;">
+          <ons-icon icon="md-thumb-down"></ons-icon>
+        </ons-col>
+        <ons-col>
+          <ons-range id="avis_value" style="width: 100%;" min="0" max="5" value="4" step="0.5"></ons-range>
+        </ons-col>
+        <ons-col width="40px" style="text-align: center; line-height: 31px;">
+          <ons-icon icon="md-thumb-up"></ons-icon>
+        </ons-col>
+      </ons-row>
+      <ons-button style="width:30%;margin: 10% 35%;text-align:center;" onclick="valueRANGE()">Vote</ons-button>
+
+      <script>
+        var range = document.getElementById('avis_value');
+        range.addEventListener('change', function () {
+          document.getElementById('avis').innerHTML = range.value;
+        });
+        function valueRANGE() {
+          var range = document.getElementById('avis_value');
+
+          ons.notification.alert('Vous avez noté le restaurant Antinea a ' + range.value + ' étoiles');
+
+        }
+      </script>
+
+    </ons-page>
+
+  </template>
+
+  <!--------------------------------------------------- PAGE RESERVATIONS ---------------------------------------------->
+  <template id="antinea-reservations.html">
+    <ons-page id="antinea-reservations">
+
+      <h1 style="text-align: center;">Votre réservation</h1>
+      <h3 id="DATE" style="text-align: center;">
+        <input id="printDateInput" value="" type="hidden">
+
+        <span id="printDate"></span>
+        <span id="printTime"></span>
+        <span id="printStamp"></span>
+      </h3>
+
+      <div id="demo"></div>
+
+      <h3 id="nb_pers" style="margin-top: 10px; width: 100%; text-align:center;" class="center">Pour
+        2 personnes
+      </h3>
+      <ons-row id="nb_pers_range" style="margin-top: 20px;">
+        <ons-col width="40px" style="text-align: center; line-height: 31px;">
+          <ons-icon icon="fa-user"></ons-icon>
+        </ons-col>
+        <ons-col>
+          <ons-range id="nb_pers_value" style="width: 100%;" min="1" max="15" value="2" step="1"></ons-range>
+        </ons-col>
+        <ons-col width="40px" style="text-align: center; line-height: 31px;">
+          <ons-icon icon="fa-user-friends"></ons-icon>
+        </ons-col>
+      </ons-row>
+
+      <div style="width: 100%; text-align:center; margin-top:15px;">
+        <ons-button onclick="RerservationRequest()">Réserver une table</ons-button>
+
+      </div>
+      <script>
+        var range = document.getElementById('nb_pers_value');
+        range.addEventListener('change', function () {
+          document.getElementById('nb_pers').innerHTML = 'Pour ' + range.value + ' personnes';
+        });
+        dp = new MtrDatepicker({
+          target: "demo",
+          future: true
+        });
+        dp.onChange('all', function (vm) {
+          vm.timeSelected = dp.getFullTime();
+
+          dp.getFullTime()
+          dp.toLocaleDateString()
+
+          document.getElementById("printTime").innerText = 'à ' + dp.format('HH:mm');
+          document.getElementById("printDate").innerText = 'La date que vous avez choisi est le ' + dp.toLocaleDateString();
+          document.getElementById("printDateInput").value = dp.format('YYYY-MM-DD HH:mm');
+          console.log(document.getElementById("printDateInput").value)
+        });
+        var idPersonne = 'GWLADYS';
+
+
+        function RerservationRequest() {
+          var request = 'https://bbessere.lpmiaw.univ-lr.fr/resto.php';
+          request = request + '?setreservation=true';
+          request = request + '&id=' + idPersonne + '&datetime=' + document.getElementById("printDateInput").value + '&amount=' + range.value;
+          // definir url : le serveur auquel on adresse la requete
+          let url = request;
+          var xhr = createCORSRequest('GET', url);
+          if (!xhr) {
+            alert('CORS not supported');
+            return;
+          }
+          // Mise en place des callabacks pour la reponse de la requete
+          xhr.onload = function () {
+            if (this.responseText <= 1) {
+              alert('Votre réservation est prise en compte')
+            } else {
+              alert('Une erreur est survenue lors de votre réservation')
+
+            }
+            // en cas de succès. Le texte reçu du serveur se trouve dans this.responseText
+            // en faire quelque chose
+          };
+          xhr.onerror = function () {
+            // en cas d'echec de la requete
+            alert('Woops, there was an error making the request.');
+          };
+          xhr.send();   // emission de la requete
+
+          function createCORSRequest(method, url) {
+            var xhr = new XMLHttpRequest();
+            if ("withCredentials" in xhr) {
+              // Check if the XMLHttpRequest object has a "withCredentials" property.
+              // "withCredentials" only exists on XMLHTTPRequest2 objects.
+              xhr.open(method, url, true);
+            } else if (typeof XDomainRequest != "undefined") {
+              // Otherwise, check if XDomainRequest.
+              // XDomainRequest only exists in IE, and is IE's way of making CORS requests.
+              xhr = new XDomainRequest();
+              xhr.open(method, url);
+            } else {
+              // Otherwise, CORS is not supported by the browser.
+              xhr = null;
+            }
+            return xhr;
+          }
+        }
+
+
+      </script>
+
+      <style>
+        #nb_pers_range {
+          background: #ffffff;
+          width: 80%;
+          margin: 5px auto;
+          border-radius: 10px;
+          padding: 20px 0;
+          border: 1px solid #fefefe;
+        }
+
+        .mtr-datepicker {
+          font-family: "Helvetica";
+          background: #ffffff;
+          width: 80%;
+          margin: 10px auto;
+          border-radius: 10px;
+          border: 1px solid #fefefe;
+          z-index: 4000;
+          position: relative;
+          text-align: center;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+        }
+      </style>
+    </ons-page>
+  </template>

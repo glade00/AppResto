@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Appli restaurant</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" charset="utf-8">
+
+  <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsenui.css">
+  <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsen-css-components.min.css">
+  <script src="https://unpkg.com/onsenui/js/onsenui.min.js"></script>
+  <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+    integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+  <script type="text/javascript" src="cordova.js"></script>
+  <script type="text/javascript">
+    var AntineaRating = 4.3;
+    function redirectToAntinea() {
+      document.location.href = "./antinea.html";
+    }
+  </script>
+</head>
+
+<body>
+
+  <!--------------------------------------------------- HOME PAGE ------------------------------------------------------------------------>
+
+
+
+  <ons-navigator id='myNavigator'>
+    <ons-page id='index.html'>
+
+      <h1>Liste des restaurants de la Rochelle</h1>
+      <p>Selectionner un restaurant dans la liste :</p>
+
+      <ons-list>
+        <ons-list-item tappable onClick="redirectToAntinea()" modifier="chevron">
+
+          <div class="left">
+            <img class="list-item__thumbnail" src="images/antinea.jpg" alt="antinea">
+          </div>
+          <div class="center">
+            <span> Antinéa
+            </span>
+          </div>
+        </ons-list-item>
+        <ons-list-item modifier="chevron" tappable
+          onClick=document.querySelector('#myNavigator').bringPageTop('antinea.html')>
+          <div class="left">
+            <img class="list-item__thumbnail" src="images/republique.jpeg" alt="antinea">
+          </div>
+          <div class="center">
+            <span> République
+            </span>
+          </div>
+        </ons-list-item>
+        <ons-list-item modifier="chevron" tappable
+          onClick=document.querySelector('#myNavigator').bringPageTop('antinea.html')>
+          <div class="left">
+            <img class="list-item__thumbnail" src="images/vespucci.jpg" alt="antinea">
+          </div>
+          <div class="center">
+            <span> Vespucci
+            </span>
+          </div>
+        </ons-list-item>
+      </ons-list>
+    </ons-page>
+  </ons-navigator>
